@@ -1,0 +1,52 @@
+/* Main Navbar */
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 48px;
+  background-color: #0b3c5d;
+}
+
+
+/* Logo */
+.navbar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  letter-spacing: 0.5px;
+}
+
+/* Links */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+/* Normal links */
+.navbar-links li a {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+/* Hover effect */
+.navbar-links li a:hover {
+  color: #d9ecff;
+}
+
+/* Register button style */
+.nav-btn {
+  background-color: #328cc1; /* lighter blue */
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.nav-btn:hover {
+  background-color: #2a78a8;
+  color: #ffffff;
+}
