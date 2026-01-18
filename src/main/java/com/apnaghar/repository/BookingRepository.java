@@ -29,4 +29,7 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     // ✅ OWNER total bookings count
     long countByPropertyOwnerId(Long ownerId);
+
+    // ✅ IMPORTANT — check if property has any bookings
+    long countByPropertyId(Long propertyId);
 }

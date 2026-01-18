@@ -2,8 +2,10 @@ package com.apnaghar.service;
 
 import com.apnaghar.model.Property;
 import com.apnaghar.model.User;
+import com.apnaghar.repository.BookingRepository;
 import com.apnaghar.repository.PropertyRepository;
 import com.apnaghar.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +19,7 @@ public class PropertyServiceImpl implements PropertyService {
 
     private final PropertyRepository propertyRepository;
     private final UserRepository userRepository;
+    private final BookingRepository bookingRepository;
 
     // ✅ Owner adds property
     @Override
@@ -59,13 +62,13 @@ public class PropertyServiceImpl implements PropertyService {
         return propertyRepository
                 .findByLocationContainingIgnoreCaseAndTypeIgnoreCase(location, type);
     }
-    
+
     @Override
     public Property getPropertyById(Long id) {
         return propertyRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
     }
-    
+
     @Override
     public List<Property> getMyProperties(String ownerEmail) {
 
@@ -74,9 +77,10 @@ public class PropertyServiceImpl implements PropertyService {
 
         return propertyRepository.findByOwnerId(owner.getId());
     }
-    
-    
+
+    // 🗑 SAFE DELETE — BLOCK IF BOOKINGS EXIST
     @Override
+    @Transactional
     public void deleteProperty(Long propertyId, String ownerEmail) {
 
         User owner = userRepository.findByEmail(ownerEmail)
@@ -90,11 +94,19 @@ public class PropertyServiceImpl implements PropertyService {
             throw new RuntimeException("You are not allowed to delete this property");
         }
 
+        long bookingCount = bookingRepository.countByPropertyId(propertyId);
+
+        if (bookingCount > 0) {
+            throw new RuntimeException(
+                "This property has active bookings. You can delete it after all bookings are completed."
+            );
+        }
+
+
         propertyRepository.delete(property);
     }
 
-
-    //this is for update property 
+    // ✏ UPDATE PROPERTY
     @Override
     public Property updateProperty(Long propertyId, Property updatedProperty, String ownerEmail) {
 
@@ -104,22 +116,19 @@ public class PropertyServiceImpl implements PropertyService {
         Property existing = propertyRepository.findById(propertyId)
                 .orElseThrow(() -> new RuntimeException("Property not found"));
 
-        // 🔒 Owner validation
         if (!existing.getOwner().getId().equals(owner.getId())) {
             throw new RuntimeException("You are not allowed to update this property");
         }
 
-        // ✅ Update allowed fields only
         existing.setTitle(updatedProperty.getTitle());
         existing.setType(updatedProperty.getType());
         existing.setLocation(updatedProperty.getLocation());
         existing.setRent(updatedProperty.getRent());
         existing.setBedrooms(updatedProperty.getBedrooms());
         existing.setAmenities(updatedProperty.getAmenities());
+        existing.setImageUrl(updatedProperty.getImageUrl());   // ✅ ADD THIS
         existing.setAvailable(updatedProperty.isAvailable());
 
         return propertyRepository.save(existing);
     }
-
-
 }

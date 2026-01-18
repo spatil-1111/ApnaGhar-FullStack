@@ -87,10 +87,17 @@ public class PropertyController {
 	// 🗑 OWNER – Delete my property
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteProperty(@PathVariable Long id, Authentication authentication) {
-		String ownerEmail = authentication.getName();
-		propertyService.deleteProperty(id, ownerEmail);
-		return ResponseEntity.ok("Property deleted successfully");
+
+	    String ownerEmail = authentication.getName();
+
+	    try {
+	        propertyService.deleteProperty(id, ownerEmail);
+	        return ResponseEntity.ok("Property deleted successfully");
+	    } catch (RuntimeException ex) {
+	        return ResponseEntity.badRequest().body(ex.getMessage());
+	    }
 	}
+
 	
 	// ✏️ OWNER – Update my property
 	@PutMapping("/{id}")
