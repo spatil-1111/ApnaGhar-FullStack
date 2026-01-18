@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
 import OwnerAddProperty from "../../pages/OwnerAddProperty";
+import { uploadImage } from "../../services/imageService";
+import "./MyProperties.css";
 
 function MyProperties() {
   const [properties, setProperties] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({});
+  const [newImageFile, setNewImageFile] = useState(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -29,38 +32,50 @@ function MyProperties() {
   const startEdit = (property) => {
     setEditingId(property.id);
     setFormData({ ...property });
+    setNewImageFile(null);
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+  const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
-      [name]:
-        name === "available"
-          ? value === "true"
-          : value,
-    });
+  setFormData({
+    ...formData,
+    [name]: name === "available" ? value === "true" : value,
+  });
+};
+
+
+  const handleImageChange = (e) => {
+    setNewImageFile(e.target.files[0]);
   };
 
-  const saveEdit = () => {
-    api.put(`/properties/${editingId}`, {
-      title: formData.title,
-      type: formData.type,
-      location: formData.location,
-      rent: Number(formData.rent),
-      bedrooms: formData.bedrooms ? Number(formData.bedrooms) : null,
-      amenities: formData.amenities,
-      available: formData.available === true || formData.available === "true",
-    })
-      .then(() => {
-        alert("Property updated successfully");
-        setEditingId(null);
-        loadProperties();
-      })
-      .catch(() => {
-        alert("Update failed");
+  const saveEdit = async () => {
+    try {
+      let imageUrl = formData.imageUrl;
+
+      if (newImageFile) {
+        const imgRes = await uploadImage(newImageFile);
+        imageUrl = imgRes.data;
+      }
+
+      await api.put(`/properties/${editingId}`, {
+        title: formData.title,
+        type: formData.type,
+        location: formData.location,
+        rent: Number(formData.rent),
+        bedrooms: formData.bedrooms ? Number(formData.bedrooms) : null,
+        amenities: formData.amenities,
+        available: formData.available === true || formData.available === "true",
+        imageUrl: imageUrl,
       });
+
+      alert("Property updated successfully");
+      setEditingId(null);
+      loadProperties();
+    } catch (error) {
+      console.error("UPDATE ERROR:", error);
+      alert("Update failed");
+    }
   };
 
   const handleDelete = (id) => {
@@ -71,136 +86,104 @@ function MyProperties() {
         alert("Property deleted");
         loadProperties();
       })
-      .catch(() => alert("Delete failed"));
+      .catch((error) => {
+        const msg = error.response?.data || "Delete failed";
+        alert(msg);
+      });
   };
 
-  if (loading) return <p>Loading your properties...</p>;
+  if (loading) return <p className="myprop-loading">Loading your properties...</p>;
 
   return (
-    <div>
-      <h3 style={{ marginBottom: "16px" }}>My Properties</h3>
+    <div className="myprop-page">
+      <div className="myprop-header">
+        <h3>My Properties</h3>
 
-      {/* ➕ ADD PROPERTY BUTTON */}
-      <button
-        onClick={() => setShowAddForm(!showAddForm)}
-        style={addBtn}
-      >
-        {showAddForm ? "Back to Properties" : "+ Add Property"}
-      </button>
+        <button
+          className="add-btn"
+          onClick={() => setShowAddForm(!showAddForm)}
+        >
+          {showAddForm ? "Back to Properties" : "+ Add Property"}
+        </button>
+      </div>
 
-      {/* ADD PROPERTY FORM */}
-     {showAddForm && (
-        <div style={{ marginTop: "20px" }}>
-            <OwnerAddProperty
+      {showAddForm && (
+        <div className="add-form-box">
+          <OwnerAddProperty
             onSuccess={() => {
-                setShowAddForm(false);
-                loadProperties();
+              setShowAddForm(false);
+              loadProperties();
             }}
-            />
+          />
         </div>
-        )}
+      )}
 
+      {!showAddForm && (
+        <div className="myprop-grid">
+          {properties.map((property) => (
+            <div key={property.id} className="myprop-card">
 
-      {/* PROPERTY LIST */}
-      {!showAddForm &&
-        properties.map((property) => (
-          <div
-            key={property.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "8px",
-              marginTop: "20px",
-              overflow: "hidden",
-              backgroundColor: "#fff",
-            }}
-          >
-            <img
-              src={property.imageUrl}
-              alt={property.title}
-              style={{ width: "100%", height: "200px", objectFit: "cover" }}
-            />
-
-            <div style={{ padding: "16px" }}>
-              <h4>{property.title}</h4>
-              <p>{property.location}</p>
-              <p><strong>₹ {property.rent}</strong></p>
-              <p>Status: {property.available ? "Available" : "Occupied"}</p>
-
-              <button onClick={() => startEdit(property)} style={btnEdit}>
-                Edit
-              </button>
-
-              <button onClick={() => handleDelete(property.id)} style={btnDelete}>
-                Delete
-              </button>
-            </div>
-
-            {editingId === property.id && (
-              <div style={editBox}>
-                <input name="title" value={formData.title} onChange={handleChange} />
-                <input name="type" value={formData.type} onChange={handleChange} />
-                <input name="location" value={formData.location} onChange={handleChange} />
-                <input name="rent" type="number" value={formData.rent} onChange={handleChange} />
-                <input name="bedrooms" type="number" value={formData.bedrooms || ""} onChange={handleChange} />
-                <textarea name="amenities" value={formData.amenities || ""} onChange={handleChange} />
-
-                <select name="available" value={formData.available} onChange={handleChange}>
-                  <option value="true">Available</option>
-                  <option value="false">Occupied</option>
-                </select>
-
-                <button onClick={saveEdit} style={btnSave}>Save</button>
-                <button onClick={() => setEditingId(null)} style={btnCancel}>Cancel</button>
+              <div className="img-wrap">
+                <img src={property.imageUrl} alt={property.title} />
               </div>
-            )}
-          </div>
-        ))}
+
+              <div className="myprop-info">
+                <h4>{property.title}</h4>
+                <p>{property.location}</p>
+                <p className="price">₹ {property.rent}</p>
+                <span
+                  className={`status ${property.available ? "available" : "occupied"}`}
+                >
+                  {property.available ? "Available" : "Occupied"}
+                </span>
+              </div>
+
+              <div className="myprop-actions">
+                <button onClick={() => startEdit(property)}>Edit</button>
+                <button className="danger" onClick={() => handleDelete(property.id)}>
+                  Delete
+                </button>
+              </div>
+
+              {editingId === property.id && (
+                <div className="edit-box">
+
+                  <img
+                    src={
+                      newImageFile
+                        ? URL.createObjectURL(newImageFile)
+                        : formData.imageUrl
+                    }
+                    alt="preview"
+                    className="preview-img"
+                  />
+
+                  <input name="title" value={formData.title} onChange={handleChange} />
+                  <input name="type" value={formData.type} onChange={handleChange} />
+                  <input name="location" value={formData.location} onChange={handleChange} />
+                  <input name="rent" type="number" value={formData.rent} onChange={handleChange} />
+                  <input name="bedrooms" type="number" value={formData.bedrooms || ""} onChange={handleChange} />
+                  <textarea name="amenities" value={formData.amenities || ""} onChange={handleChange} />
+
+                  <input type="file" onChange={handleImageChange} />
+
+                  <select name="available" value={formData.available} onChange={handleChange}>
+                    <option value="true">Available</option>
+                    <option value="false">Occupied</option>
+                  </select>
+
+                  <div className="edit-actions">
+                    <button onClick={saveEdit} className="save">Save</button>
+                    <button onClick={() => setEditingId(null)} className="cancel">Cancel</button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-
-/* ---------- Styles ---------- */
-
-const addBtn = {
-  padding: "10px 16px",
-  backgroundColor: "#328cc1",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const editBox = {
-  padding: "16px",
-  borderTop: "1px solid #ddd",
-  backgroundColor: "#f9f9f9",
-  display: "grid",
-  gap: "10px",
-};
-
-const btnEdit = {
-  marginRight: "10px",
-  padding: "6px 12px",
-};
-
-const btnDelete = {
-  padding: "6px 12px",
-  backgroundColor: "red",
-  color: "#fff",
-  border: "none",
-};
-
-const btnSave = {
-  padding: "6px 12px",
-  backgroundColor: "green",
-  color: "#fff",
-  border: "none",
-};
-
-const btnCancel = {
-  padding: "6px 12px",
-  backgroundColor: "gray",
-  color: "#fff",
-  border: "none",
-};
 
 export default MyProperties;

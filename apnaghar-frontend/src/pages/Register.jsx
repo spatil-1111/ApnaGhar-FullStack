@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { registerUser } from "../services/authService";
+import { Link } from "react-router-dom";
+import "./Auth.css";
 
 function Register() {
   const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
-    role: "USER", // ✅ default
+    role: "USER",
   });
 
   const handleChange = (e) => {
@@ -20,90 +22,65 @@ function Register() {
     e.preventDefault();
 
     try {
-      const response = await registerUser(form);
-
-      console.log("Register success:", response.data);
+      await registerUser(form);
       alert("Registration successful! Please login.");
       window.location.href = "/login";
     } catch (error) {
       console.error("Register error:", error);
-      alert(
-        error.response?.data?.message ||
-        "Registration failed"
-      );
+      alert(error.response?.data?.message || "Registration failed");
     }
   };
 
   return (
-    <div style={{ padding: "60px", maxWidth: "400px", margin: "auto" }}>
-      <h2 style={{ marginBottom: "24px" }}>Register</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2>Create Account</h2>
+        <p className="auth-subtitle">Join ApnaGhar and find your perfect home</p>
 
-      <form onSubmit={handleRegister}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-          style={inputStyle}
-        />
+        <form onSubmit={handleRegister} className="auth-form">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={form.name}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-          style={inputStyle}
-        />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email Address"
+            value={form.email}
+            onChange={handleChange}
+            required
+          />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-          style={inputStyle}
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Create Password"
+            value={form.password}
+            onChange={handleChange}
+            required
+          />
 
-        {/* ✅ ROLE SELECTION */}
-        <select
-          name="role"
-          value={form.role}
-          onChange={handleChange}
-          required
-          style={inputStyle}
-        >
-          <option value="USER">I want to book room / flat</option>
-          <option value="OWNER">I want to list my property</option>
-        </select>
+          <select name="role" value={form.role} onChange={handleChange}>
+            <option value="USER">I want to book room / flat</option>
+            <option value="OWNER">I want to list my property</option>
+          </select>
 
-        <button type="submit" style={buttonStyle}>
-          Register
-        </button>
-      </form>
+          <button type="submit" className="auth-btn">
+            Register
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          Already have an account? <Link to="/login">Login</Link>
+        </div>
+      </div>
     </div>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  padding: "12px",
-  marginBottom: "16px",
-  fontSize: "14px",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "12px",
-  backgroundColor: "#328cc1",
-  color: "#ffffff",
-  border: "none",
-  fontSize: "16px",
-  cursor: "pointer",
-};
 
 export default Register;

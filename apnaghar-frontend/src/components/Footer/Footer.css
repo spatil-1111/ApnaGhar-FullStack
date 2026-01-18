@@ -1,0 +1,98 @@
+.footer {
+  background: linear-gradient(135deg, #0b3c5d, #082f49);
+  color: #e5e7eb;
+  margin-top: 80px;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 60px 24px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 40px;
+}
+
+/* BRAND */
+
+.footer-logo {
+  font-size: 22px;
+  font-weight: 800;
+  color: white;
+}
+
+.footer-logo span {
+  color: #60a5fa;
+}
+
+.footer-text {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #d1d5db;
+}
+
+/* COLUMNS */
+
+.footer-col h4 {
+  margin-bottom: 14px;
+  color: white;
+}
+
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 8px;
+}
+
+.footer-col a {
+  text-decoration: none;
+  color: #d1d5db;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.footer-col a:hover {
+  color: #60a5fa;
+}
+
+/* SOCIAL */
+
+.social-links {
+  display: flex;
+  gap: 12px;
+  font-size: 22px;
+}
+
+.social-links a {
+  transition: transform 0.2s ease;
+}
+
+.social-links a:hover {
+  transform: scale(1.2);
+}
+
+/* BOTTOM */
+
+.footer-bottom {
+  text-align: center;
+  padding: 16px;
+  background: #061f33;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .footer-container {
+    text-align: center;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}

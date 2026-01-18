@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
+import "./OwnerBookings.css";
 
 function OwnerBookings() {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ✅ FETCH FROM BACKEND
   const fetchBookings = () => {
     setLoading(true);
     api.get("/bookings/owner")
@@ -23,18 +23,16 @@ function OwnerBookings() {
     fetchBookings();
   }, []);
 
-  // 📊 Stats
   const total = bookings.length;
   const pending = bookings.filter(b => b.status === "PENDING").length;
   const confirmed = bookings.filter(b => b.status === "CONFIRMED").length;
   const cancelled = bookings.filter(b => b.status === "CANCELLED").length;
 
-  // ✅ UPDATE STATUS
   const updateStatus = (bookingId, status) => {
     api.put(`/bookings/${bookingId}/status?status=${status}`)
       .then(() => {
         alert(`Booking ${status}`);
-        fetchBookings(); // 🔥 RELOAD FROM DB
+        fetchBookings();
       })
       .catch((err) => {
         console.error("Update failed", err);
@@ -43,154 +41,75 @@ function OwnerBookings() {
   };
 
   if (loading) {
-    return <p style={{ padding: "40px" }}>Loading bookings...</p>;
+    return <p className="owner-loading">Loading bookings...</p>;
   }
 
   return (
-    <div style={{ padding: "60px", maxWidth: "900px", margin: "auto" }}>
-      <h2>Owner – Property Bookings</h2>
+    <div className="owner-booking-page">
+      <h2>Property Bookings</h2>
 
-      {/* 📊 Dashboard */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: "16px",
-          marginTop: "24px",
-          marginBottom: "32px",
-        }}
-      >
-        <StatCard label="Total Bookings" value={total} color="#0b3c5d" />
-        <StatCard label="Pending" value={pending} color="orange" />
-        <StatCard label="Confirmed" value={confirmed} color="green" />
-        <StatCard label="Cancelled" value={cancelled} color="red" />
+      {/* STATS */}
+      <div className="owner-stats">
+        <StatCard label="Total" value={total} color="#0b3c5d" />
+        <StatCard label="Pending" value={pending} color="#f59e0b" />
+        <StatCard label="Confirmed" value={confirmed} color="#16a34a" />
+        <StatCard label="Cancelled" value={cancelled} color="#ef4444" />
       </div>
 
+      {/* BOOKINGS */}
       {bookings.length === 0 ? (
-        <p>No bookings yet.</p>
+        <p className="owner-empty">No bookings yet.</p>
       ) : (
-        bookings.map((booking) => (
-          <div
-            key={booking.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: "16px",
-              marginTop: "16px",
-              borderRadius: "6px",
-              backgroundColor: "#fff",
-            }}
-          >
-            <p><strong>Booking ID:</strong> {booking.id}</p>
-            <p><strong>User:</strong> {booking.user?.name}</p>
+        <div className="owner-booking-grid">
+          {bookings.map((booking) => (
+            <div key={booking.id} className="owner-booking-card">
+              <div className="owner-booking-header">
+                Booking #{booking.id}
+                <span className={`status ${booking.status.toLowerCase()}`}>
+                  {booking.status}
+                </span>
+              </div>
 
-            <BookingTimeline status={booking.status} />
+              <div className="owner-booking-body">
+                <p><strong>User:</strong> {booking.user?.name}</p>
+                <p><strong>Start:</strong> {booking.startDate || "N/A"}</p>
+                <p><strong>End:</strong> {booking.endDate || "N/A"}</p>
 
-            {booking.status === "PENDING" && (
-              <>
-                <button
-                  onClick={() => updateStatus(booking.id, "CONFIRMED")}
-                  style={btnConfirm}
-                >
-                  Confirm
-                </button>
+                {booking.status === "PENDING" && (
+                  <div className="owner-actions">
+                    <button
+                      className="confirm-btn"
+                      onClick={() => updateStatus(booking.id, "CONFIRMED")}
+                    >
+                      Confirm
+                    </button>
 
-                <button
-                  onClick={() => updateStatus(booking.id, "CANCELLED")}
-                  style={btnCancel}
-                >
-                  Cancel
-                </button>
-              </>
-            )}
-          </div>
-        ))
+                    <button
+                      className="cancel-btn"
+                      onClick={() => updateStatus(booking.id, "CANCELLED")}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 }
 
-/* ---------- STATUS TIMELINE ---------- */
-function BookingTimeline({ status }) {
-  const getColor = (step) => {
-    if (step === status) return "#328cc1";
-    if (status === "CANCELLED" && step === "CONFIRMED") return "#ccc";
-    return "#ccc";
-  };
+/* ---------- STAT CARD ---------- */
 
-  return (
-    <div style={{ display: "flex", alignItems: "center", margin: "16px 0" }}>
-      <TimelineStep label="PENDING" color={getColor("PENDING")} />
-      <TimelineLine />
-      <TimelineStep label="CONFIRMED" color={getColor("CONFIRMED")} />
-      <TimelineLine />
-      <TimelineStep label="CANCELLED" color={getColor("CANCELLED")} />
-    </div>
-  );
-}
-
-function TimelineStep({ label, color }) {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <div
-        style={{
-          width: "14px",
-          height: "14px",
-          borderRadius: "50%",
-          backgroundColor: color,
-          margin: "auto",
-        }}
-      />
-      <small style={{ color, fontWeight: "bold" }}>{label}</small>
-    </div>
-  );
-}
-
-function TimelineLine() {
-  return (
-    <div
-      style={{
-        flex: 1,
-        height: "2px",
-        backgroundColor: "#ccc",
-        margin: "0 6px",
-      }}
-    />
-  );
-}
-
-/* ---------- Dashboard Card ---------- */
 function StatCard({ label, value, color }) {
   return (
-    <div
-      style={{
-        padding: "20px",
-        borderRadius: "8px",
-        backgroundColor: "#ffffff",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
-        textAlign: "center",
-      }}
-    >
-      <h3 style={{ marginBottom: "8px", color }}>{value}</h3>
-      <p style={{ color: "#555" }}>{label}</p>
+    <div className="stat-card">
+      <h3 style={{ color }}>{value}</h3>
+      <p>{label}</p>
     </div>
   );
 }
-
-const btnConfirm = {
-  marginRight: "10px",
-  padding: "8px 14px",
-  backgroundColor: "green",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const btnCancel = {
-  padding: "8px 14px",
-  backgroundColor: "red",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
 
 export default OwnerBookings;

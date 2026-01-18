@@ -13,6 +13,7 @@ import OwnerBookings from "./pages/OwnerBookings";
 import OwnerAddProperty from "./pages/OwnerAddProperty";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -70,6 +71,13 @@ function App() {
 
 
       </Routes>
+
+      <Routes>
+  {/* all your routes here */}
+</Routes>
+
+<Footer />
+
     </BrowserRouter>
   );
 }

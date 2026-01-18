@@ -4,13 +4,13 @@ import {
   cancelBookingByUser,
 } from "../services/bookingService";
 import { getMyPayments, payForBooking } from "../services/paymentService";
+import "./Bookings.css";
 
 function Bookings() {
   const [bookings, setBookings] = useState([]);
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 🔄 Load bookings + payments
   const loadMyBookings = async () => {
     setLoading(true);
     try {
@@ -30,9 +30,8 @@ function Bookings() {
     loadMyBookings();
   }, []);
 
-  // ❌ Cancel booking (USER)
   const handleCancel = (bookingId) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
+    if (!window.confirm("Cancel this booking?")) return;
 
     cancelBookingByUser(bookingId)
       .then(() => {
@@ -40,14 +39,10 @@ function Bookings() {
         loadMyBookings();
       })
       .catch((error) => {
-        alert(
-          error.response?.data?.message ||
-          "You cannot cancel this booking"
-        );
+        alert(error.response?.data?.message || "Cancel failed");
       });
   };
 
-  // 💳 Pay Now
   const handlePay = async (bookingId) => {
     try {
       await payForBooking(bookingId);
@@ -64,90 +59,64 @@ function Bookings() {
   };
 
   if (loading) {
-    return (
-      <div style={containerStyle}>
-        <h2>My Bookings</h2>
-        <p>Loading your bookings...</p>
-      </div>
-    );
+    return <p className="booking-loading">Loading your bookings...</p>;
   }
 
   return (
-    <div style={containerStyle}>
-      <h2 style={{ marginBottom: "24px" }}>My Bookings</h2>
+    <div className="booking-page">
+      <h2>My Bookings</h2>
 
       {bookings.length === 0 ? (
-        <div style={emptyBoxStyle}>
-          <p style={{ fontSize: "16px", color: "#555" }}>
-            You have not made any bookings yet.
-          </p>
-          <p style={{ color: "#888" }}>
-            Browse properties and book your stay.
-          </p>
+        <div className="booking-empty">
+          <p>No bookings yet 😕</p>
+          <span>Browse properties and book your stay.</span>
         </div>
       ) : (
-        <div style={gridStyle}>
+        <div className="booking-grid">
           {bookings.map((booking) => {
             const payment = getPaymentForBooking(booking.id);
 
             return (
-              <div key={booking.id} style={cardStyle}>
-                <div style={cardHeaderStyle}>
+              <div key={booking.id} className="booking-card">
+                <div className="booking-header">
                   Booking #{booking.id}
+                  <span className={`status ${booking.status.toLowerCase()}`}>
+                    {booking.status}
+                  </span>
                 </div>
 
-                <div style={cardBodyStyle}>
-                  <p>
-                    <strong>Status:</strong>{" "}
-                    <span style={{ color: statusColor(booking.status) }}>
-                      {booking.status}
-                    </span>
-                  </p>
+                <div className="booking-body">
+                  <p><strong>Start:</strong> {booking.startDate || "N/A"}</p>
+                  <p><strong>End:</strong> {booking.endDate || "N/A"}</p>
 
-                  <p>
-                    <strong>Start Date:</strong>{" "}
-                    {booking.startDate || "N/A"}
-                  </p>
-
-                  <p>
-                    <strong>End Date:</strong>{" "}
-                    {booking.endDate || "N/A"}
-                  </p>
-
-                  {/* 💳 PAYMENT SECTION */}
                   {payment && (
                     <p>
                       <strong>Payment:</strong>{" "}
-                      <span style={{ color: paymentColor(payment.status) }}>
+                      <span className={`pay ${payment.status.toLowerCase()}`}>
                         {payment.status}
                       </span>
                     </p>
                   )}
 
-                  {/* 💳 PAY NOW */}
                   {payment &&
                     payment.status === "PENDING" &&
                     booking.status === "CONFIRMED" && (
                       <button
+                        className="pay-btn"
                         onClick={() => handlePay(booking.id)}
-                        style={payBtnStyle}
                       >
                         Pay Now
                       </button>
                     )}
 
-                  {/* ✅ PAID */}
                   {payment && payment.status === "SUCCESS" && (
-                    <p style={{ color: "green", fontWeight: "bold" }}>
-                      Paid ✅
-                    </p>
+                    <p className="paid-text">Paid ✅</p>
                   )}
 
-                  {/* ❌ Cancel only if pending booking */}
                   {booking.status === "PENDING" && (
                     <button
+                      className="cancel-btn"
                       onClick={() => handleCancel(booking.id)}
-                      style={cancelBtnStyle}
                     >
                       Cancel Booking
                     </button>
@@ -161,83 +130,5 @@ function Bookings() {
     </div>
   );
 }
-
-/* ---------- Styles ---------- */
-
-const containerStyle = {
-  padding: "60px",
-  maxWidth: "900px",
-  margin: "auto",
-};
-
-const gridStyle = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-  gap: "20px",
-};
-
-const cardStyle = {
-  border: "1px solid #e0e0e0",
-  borderRadius: "8px",
-  backgroundColor: "#ffffff",
-  boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
-  overflow: "hidden",
-};
-
-const cardHeaderStyle = {
-  backgroundColor: "#328cc1",
-  color: "#ffffff",
-  padding: "12px",
-  fontWeight: "bold",
-};
-
-const cardBodyStyle = {
-  padding: "16px",
-  color: "#333",
-};
-
-const emptyBoxStyle = {
-  border: "1px dashed #ccc",
-  padding: "40px",
-  textAlign: "center",
-  borderRadius: "8px",
-  backgroundColor: "#fafafa",
-};
-
-const cancelBtnStyle = {
-  marginTop: "12px",
-  backgroundColor: "red",
-  color: "white",
-  padding: "8px 14px",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-};
-
-const payBtnStyle = {
-  marginTop: "12px",
-  backgroundColor: "green",
-  color: "white",
-  padding: "8px 14px",
-  border: "none",
-  borderRadius: "4px",
-  cursor: "pointer",
-};
-
-// ✅ booking status colors
-const statusColor = (status) => {
-  if (status === "CONFIRMED") return "green";
-  if (status === "CANCELLED") return "red";
-  if (status === "PENDING") return "orange";
-  return "#333";
-};
-
-// ✅ payment status colors
-const paymentColor = (status) => {
-  if (status === "SUCCESS") return "green";
-  if (status === "FAILED") return "red";
-  if (status === "PENDING") return "orange";
-  return "#333";
-};
 
 export default Bookings;

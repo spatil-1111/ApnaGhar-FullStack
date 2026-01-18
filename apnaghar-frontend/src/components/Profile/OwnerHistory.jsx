@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import "./OwnerHistory.css";
 
 function OwnerHistory() {
   const [bookings, setBookings] = useState([]);
@@ -22,76 +23,73 @@ function OwnerHistory() {
       });
   }, []);
 
-  if (loading) return <p>Loading owner history...</p>;
+  if (loading) return <p className="hist-loading">Loading owner history...</p>;
 
-  if (bookings.length === 0) return <p>No history available.</p>;
+  if (bookings.length === 0)
+    return <p className="hist-empty">No history available.</p>;
 
   return (
-    <div>
-      <h3>📜 Property Booking & Earnings History</h3>
+    <div className="owner-history-page">
+      <h3>📜 Booking & Payment History</h3>
 
-      {bookings.map((b) => {
-        const payment = payments.find(
-          (p) => p.booking.id === b.id
-        );
+      <div className="history-list">
+        {bookings.map((b) => {
+          const payment = payments.find((p) => p.booking.id === b.id);
 
-        return (
-          <div
-            key={b.id}
-            style={{
-              border: "1px solid #ddd",
-              borderRadius: "10px",
-              padding: "16px",
-              marginBottom: "16px",
-              background: "#fafafa",
-            }}
-          >
-            <h4>{b.property.title}</h4>
-            <p><b>User:</b> {b.user.name}</p>
+          return (
+            <div key={b.id} className="history-card">
+              {/* HEADER */}
+              <div className="history-head">
+                <div>
+                  <h4>{b.property.title}</h4>
+                  <p>User: {b.user.name}</p>
+                </div>
 
-            <TimelineItem
-              label="Booking Requested"
-              date={b.bookingDate}
-              color="orange"
-            />
+                <span className={`status ${b.status.toLowerCase()}`}>
+                  {b.status}
+                </span>
+              </div>
 
-            {b.status === "CONFIRMED" && (
-              <TimelineItem
-                label="Booking Confirmed"
-                date={b.bookingDate}
-                color="green"
-              />
-            )}
+              {/* TIMELINE */}
+              <div className="timeline">
+                <TimelineItem
+                  label="Booking Requested"
+                  date={b.bookingDate}
+                  color="orange"
+                />
 
-            {payment && (
-              <TimelineItem
-                label="Payment Received"
-                date={payment.paymentDate}
-                color="#328cc1"
-              />
-            )}
-          </div>
-        );
-      })}
+                {b.status === "CONFIRMED" && (
+                  <TimelineItem
+                    label="Booking Confirmed"
+                    date={b.bookingDate}
+                    color="green"
+                  />
+                )}
+
+                {payment && (
+                  <TimelineItem
+                    label="Payment Received"
+                    date={payment.paymentDate}
+                    color="blue"
+                  />
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
 
 function TimelineItem({ label, date, color }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", marginTop: "8px" }}>
-      <div
-        style={{
-          width: "10px",
-          height: "10px",
-          borderRadius: "50%",
-          background: color,
-          marginRight: "10px",
-        }}
-      />
-      <p style={{ margin: 0 }}>
-        <b>{label}</b> — {new Date(date).toLocaleDateString()}
-      </p>
+    <div className="timeline-item">
+      <span className={`dot ${color}`} />
+      <div>
+        <p className="t-label">{label}</p>
+        <p className="t-date">{new Date(date).toLocaleString()}</p>
+      </div>
     </div>
   );
 }

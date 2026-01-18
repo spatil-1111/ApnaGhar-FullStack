@@ -4,7 +4,7 @@ import "./Hero.css";
 
 function Hero() {
   const navigate = useNavigate();
-  const user = getUser(); // logged-in user
+  const user = getUser();
 
   const handleListProperty = () => {
     if (!user) {
@@ -14,32 +14,37 @@ function Hero() {
     }
 
     if (user.role === "OWNER") {
-      navigate("/profile"); // owner dashboard
+      navigate("/profile");
     } else {
       alert("Only property owners can list properties.");
     }
   };
 
   return (
-    <section className="hero" data-aos="fade-up">
-      <div className="hero-content">
-        <h1>Find Your Perfect Home with ApnaGhar</h1>
+    <section className="hero-section">
+      {/* 🔥 Overlay */}
+      <div className="hero-overlay"></div>
+
+      {/* 🔥 Content */}
+      <div className="hero-content" data-aos="fade-up">
+        <h1>
+          Find Your <span>Perfect Home</span> with ApnaGhar
+        </h1>
+
         <p>
-          PGs, Hostels, Flats & Rooms — all in one trusted platform.
+          PGs, Hostels, Flats & Rooms — all in one trusted platform across India.
         </p>
 
         <div className="hero-buttons">
-          {/* ✅ EXPLORE PROPERTIES */}
           <button
-            className="primary-btn"
+            className="hero-btn primary"
             onClick={() => navigate("/properties")}
           >
             Explore Properties
           </button>
 
-          {/* ✅ LIST YOUR PROPERTY — ROLE BASED */}
           <button
-            className="secondary-btn"
+            className="hero-btn secondary"
             onClick={handleListProperty}
           >
             List Your Property

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import "./UserPayments.css";
 
 function UserPayments() {
   const [payments, setPayments] = useState([]);
@@ -22,31 +23,35 @@ function UserPayments() {
   }
 
   return (
-    <div>
+    <div className="payments-page">
       <h3>💳 My Payments</h3>
 
       {payments.length === 0 ? (
-        <p>No payments done yet.</p>
+        <div className="empty-box">
+          <p>No payments done yet.</p>
+        </div>
       ) : (
-        payments.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: "14px",
-              borderRadius: "8px",
-              marginBottom: "12px",
-              background: "#fafafa",
-            }}
-          >
-            <p><b>Amount:</b> ₹ {p.amount}</p>
-            <p><b>Property:</b> {p.booking.property.title}</p>
-            <p><b>Status:</b> {p.status}</p>
-            <small>
-              {new Date(p.paymentDate).toLocaleString()}
-            </small>
-          </div>
-        ))
+        <div className="payments-grid">
+          {payments.map((p) => (
+            <div key={p.id} className="payment-card">
+              <div className="pay-header">
+                <span className={`status ${p.status.toLowerCase()}`}>
+                  {p.status}
+                </span>
+              </div>
+
+              <h4>₹ {p.amount}</h4>
+
+              <p className="prop-name">
+                {p.booking?.property?.title}
+              </p>
+
+              <small className="date">
+                {new Date(p.paymentDate).toLocaleString()}
+              </small>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

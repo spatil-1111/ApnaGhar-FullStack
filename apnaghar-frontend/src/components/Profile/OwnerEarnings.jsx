@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import "./OwnerEarnings.css";
 
 function OwnerEarnings() {
   const [payments, setPayments] = useState([]);
@@ -18,67 +19,60 @@ function OwnerEarnings() {
   }, []);
 
   if (loading) {
-    return <p>Loading earnings...</p>;
+    return <p className="earn-loading">Loading earnings...</p>;
   }
 
   const totalEarnings = payments.reduce((sum, p) => sum + p.amount, 0);
 
   const currentMonth = new Date().getMonth();
-  const monthlyEarnings = payments.filter(p =>
-    new Date(p.paymentDate).getMonth() === currentMonth
-  ).reduce((sum, p) => sum + p.amount, 0);
+  const monthlyEarnings = payments
+    .filter((p) => new Date(p.paymentDate).getMonth() === currentMonth)
+    .reduce((sum, p) => sum + p.amount, 0);
 
   return (
-    <div>
+    <div className="earn-page">
       <h3>💰 Earnings Overview</h3>
 
-      {/* SUMMARY CARDS */}
-      <div style={{ display: "flex", gap: "16px", margin: "20px 0" }}>
-        <StatCard label="Total Earnings" value={`₹ ${totalEarnings}`} />
-        <StatCard label="This Month" value={`₹ ${monthlyEarnings}`} />
-        <StatCard label="Payments" value={payments.length} />
+      {/* SUMMARY */}
+      <div className="earn-summary">
+        <StatCard label="Total Earnings" value={`₹ ${totalEarnings}`} color="blue" />
+        <StatCard label="This Month" value={`₹ ${monthlyEarnings}`} color="green" />
+        <StatCard label="Total Payments" value={payments.length} color="orange" />
       </div>
 
-      {/* PAYMENT LIST */}
+      {/* LIST */}
       {payments.length === 0 ? (
-        <p>No earnings yet.</p>
+        <p className="earn-empty">No earnings yet.</p>
       ) : (
-        payments.map((p) => (
-          <div
-            key={p.id}
-            style={{
-              border: "1px solid #ddd",
-              padding: "14px",
-              borderRadius: "6px",
-              marginBottom: "10px",
-            }}
-          >
-            <p><b>Amount:</b> ₹ {p.amount}</p>
-            <p><b>Property:</b> {p.booking.property.title}</p>
-            <p><b>User:</b> {p.booking.user.name}</p>
-            <small>
-              {new Date(p.paymentDate).toLocaleString()}
-            </small>
-          </div>
-        ))
+        <div className="earn-list">
+          {payments.map((p) => (
+            <div key={p.id} className="earn-card">
+              <div>
+                <h4>₹ {p.amount}</h4>
+                <p className="prop-title">{p.booking.property.title}</p>
+                <p className="user-name">User: {p.booking.user.name}</p>
+              </div>
+
+              <div className="earn-date">
+                {new Date(p.paymentDate).toLocaleDateString()}
+                <br />
+                {new Date(p.paymentDate).toLocaleTimeString()}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 }
 
-function StatCard({ label, value }) {
+/* STAT CARD */
+
+function StatCard({ label, value, color }) {
   return (
-    <div
-      style={{
-        padding: "14px",
-        borderRadius: "8px",
-        background: "#f8f9fa",
-        minWidth: "140px",
-        textAlign: "center",
-      }}
-    >
-      <h4>{value}</h4>
-      <p style={{ color: "#666" }}>{label}</p>
+    <div className={`earn-stat ${color}`}>
+      <h2>{value}</h2>
+      <p>{label}</p>
     </div>
   );
 }

@@ -1,52 +1,137 @@
-/* Main Navbar */
+/* ================= NAVBAR BASE ================= */
+
 .navbar {
+  position: fixed;
+  top: 0;
   width: 100%;
+  z-index: 999;
+  padding: 14px 0;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+/* SOLID NAVBAR */
+.navbar-solid {
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= CONTAINER ================= */
+
+.navbar-container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 48px;
-  background-color: #0b3c5d;
 }
 
+/* ================= LOGO ================= */
 
-/* Logo */
 .navbar-logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #ffffff;
-  letter-spacing: 0.5px;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  color: white;
 }
 
-/* Links */
+.navbar-logo span {
+  color: #3b82f6;
+}
+
+.navbar-solid .navbar-logo {
+  color: #111827;
+}
+
+/* ================= LINKS ================= */
+
 .navbar-links {
   list-style: none;
   display: flex;
-  gap: 28px;
   align-items: center;
+  gap: 22px;
+  margin: 0;
+  padding: 0;
 }
 
-/* Normal links */
-.navbar-links li a {
+.navbar-links a {
   text-decoration: none;
-  color: #ffffff;
-  font-size: 16px;
-  transition: color 0.3s ease;
+  font-size: 14px;
+  color: white;
+  transition: color 0.2s ease;
 }
 
-/* Hover effect */
-.navbar-links li a:hover {
-  color: #d9ecff;
+.navbar-links a:hover {
+  color: #60a5fa;
 }
 
-/* Register button style */
+.navbar-solid .navbar-links a {
+  color: #1f2937;
+}
+
+/* ================= BUTTON ================= */
+
 .nav-btn {
-  background-color: #328cc1; /* lighter blue */
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white !important;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .nav-btn:hover {
-  background-color: #2a78a8;
-  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+}
+
+/* ================= USER NAME ================= */
+
+.username {
+  font-size: 13px;
+  color: #e5e7eb;
+}
+
+.navbar-solid .username {
+  color: #1f2937;
+}
+
+/* ================= NOTIFICATION ================= */
+
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  font-size: 18px;
+  color: white;
+}
+
+.navbar-solid .notification-icon {
+  color: #1f2937;
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: red;
+  color: white;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 768px) {
+  .navbar-links {
+    gap: 14px;
+  }
+
+  .navbar-logo {
+    font-size: 18px;
+  }
 }

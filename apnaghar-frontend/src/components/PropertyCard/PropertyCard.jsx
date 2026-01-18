@@ -4,24 +4,34 @@ import "./PropertyCard.css";
 function PropertyCard({ id, title, location, price, image }) {
   const navigate = useNavigate();
 
-  const handleClick = () => {
-    console.log("Clicked property ID:", id); // 🔍 DEBUG
+  const goToDetails = () => {
     navigate(`/property/${id}`);
   };
 
   return (
-    <div
-      className="property-card"
-      data-aos="zoom-in"
-      onClick={handleClick}
-      style={{ cursor: "pointer" }}
-    >
-      <img src={image} alt={title} className="property-image" />
+    <div className="property-card">
+      {/* CLICKABLE IMAGE */}
+      <div className="image-wrapper" onClick={goToDetails}>
+        <img
+          src={
+            image ||
+            "https://images.unsplash.com/photo-1560185008-5f0bb1866cab"
+          }
+          alt={title}
+          className="property-image"
+          onError={(e) => {
+            e.target.src =
+              "https://images.unsplash.com/photo-1560185008-5f0bb1866cab";
+          }}
+        />
 
-      <div className="property-info">
-        <h3>{title}</h3>
+        <div className="price-badge">₹ {price} / mo</div>
+      </div>
+
+      {/* CLICKABLE INFO */}
+      <div className="property-info" onClick={goToDetails}>
+        <h3 title={title}>{title}</h3>
         <p className="location">{location}</p>
-        <p className="price">₹ {price} / month</p>
       </div>
     </div>
   );

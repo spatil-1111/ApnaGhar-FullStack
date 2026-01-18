@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { loginUser } from "../services/authService";
 import { setAuthData } from "../utils/auth";
+import { Link } from "react-router-dom";
+import "./Auth.css";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -30,51 +32,39 @@ function Login() {
   };
 
   return (
-    <div style={{ padding: "60px", maxWidth: "400px", margin: "auto" }}>
-      <h2 style={{ marginBottom: "24px" }}>Login</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2>Welcome Back</h2>
+        <p className="auth-subtitle">Login to continue to ApnaGhar</p>
 
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          style={inputStyle}
-        />
+        <form onSubmit={handleLogin} className="auth-form">
+          <input
+            type="email"
+            placeholder="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          style={inputStyle}
-        />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-        <button type="submit" style={buttonStyle}>
-          Login
-        </button>
-      </form>
+          <button type="submit" className="auth-btn">
+            Login
+          </button>
+        </form>
+
+        <div className="auth-footer">
+          Don’t have an account? <Link to="/register">Register</Link>
+        </div>
+      </div>
     </div>
   );
 }
-
-const inputStyle = {
-  width: "100%",
-  padding: "12px",
-  marginBottom: "16px",
-  fontSize: "14px",
-};
-
-const buttonStyle = {
-  width: "100%",
-  padding: "12px",
-  backgroundColor: "#328cc1",
-  color: "#ffffff",
-  border: "none",
-  fontSize: "16px",
-  cursor: "pointer",
-};
 
 export default Login;

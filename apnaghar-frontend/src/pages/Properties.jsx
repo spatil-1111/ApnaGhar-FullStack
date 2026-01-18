@@ -6,6 +6,7 @@ import {
   searchByType,
   searchByLocationAndType,
 } from "../services/propertyService";
+import "./Properties.css";
 
 function Properties() {
   const [properties, setProperties] = useState([]);
@@ -24,7 +25,6 @@ function Properties() {
   const loadProperties = () => {
     setLoading(true);
 
-    // 🔍 FILTER LOGIC
     if (location && type) {
       searchByLocationAndType(location, type).then(handleSearchResponse);
     } else if (location) {
@@ -55,115 +55,89 @@ function Properties() {
   };
 
   if (loading) {
-    return <p style={{ padding: "60px" }}>Loading properties...</p>;
+    return <p className="prop-loading">Loading properties...</p>;
   }
 
   return (
-    <div style={{ padding: "60px" }}>
-      <h2 style={{ marginBottom: "24px" }}>Available Properties</h2>
+    <div className="properties-page">
+      {/* HEADER */}
+      <div className="prop-header">
+        <h2>Find Your Perfect Stay</h2>
+        <p>Browse PGs, Hostels and Flats across top cities</p>
+      </div>
 
-      {/* FILTERS */}
-      <div style={{ display: "flex", gap: "16px", marginBottom: "32px" }}>
+      {/* FILTER BAR */}
+      <div className="filter-bar">
         <select value={location} onChange={(e) => setLocation(e.target.value)}>
-          <option value="">Select Location</option>
+          <option value=""> Location</option>
           <option value="Pune">Pune</option>
           <option value="Mumbai">Mumbai</option>
           <option value="Bangalore">Bangalore</option>
         </select>
 
         <select value={type} onChange={(e) => setType(e.target.value)}>
-          <option value="">Select Type</option>
+          <option value=""> Property Type</option>
           <option value="PG">PG</option>
           <option value="HOSTEL">Hostel</option>
           <option value="FLAT">Flat</option>
         </select>
 
-        <button onClick={loadProperties} style={filterBtn}>
-          Apply
+        <button onClick={loadProperties} className="filter-btn">
+          Search
         </button>
 
-        <button onClick={clearFilters} style={clearBtn}>
-          Clear
+        <button onClick={clearFilters} className="clear-btn">
+          Reset
         </button>
       </div>
 
       {/* PROPERTY GRID */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-          gap: "24px",
-        }}
-      >
-        {properties.map((property) => (
-          <PropertyCard
-            key={property.id}
-            id={property.id}
-            title={property.title}
-            location={property.location}
-            price={property.rent}
-            image={property.imageUrl}
-          />
-        ))}
-      </div>
+      {properties.length === 0 ? (
+        <div className="empty-box">
+          <h3>No properties found </h3>
+          <p>Try changing filters or browse all listings</p>
+        </div>
+      ) : (
+        <div className="property-grid">
+          {properties.map((property) => (
+            <PropertyCard
+              key={property.id}
+              id={property.id}
+              title={property.title}
+              location={property.location}
+              price={property.rent}
+              image={property.imageUrl}
+            />
+          ))}
+        </div>
+      )}
 
-      {/* PAGINATION (only when no filters) */}
-      {!location && !type && (
-        <div
-          style={{
-            marginTop: "40px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "16px",
-          }}
-        >
+      {/* PAGINATION */}
+      {!location && !type && totalPages > 1 && (
+        <div className="pagination">
           <button
             onClick={() => setPage((p) => p - 1)}
             disabled={page === 0}
-            style={paginationBtn}
+            className="page-btn"
           >
-            Previous
+            ← Previous
           </button>
 
-          <span style={{ alignSelf: "center" }}>
+          <span className="page-text">
             Page {page + 1} of {totalPages}
           </span>
 
           <button
             onClick={() => setPage((p) => p + 1)}
             disabled={page === totalPages - 1}
-            style={paginationBtn}
+            className="page-btn"
           >
-            Next
+            Next →
           </button>
         </div>
       )}
     </div>
   );
 }
-
-const filterBtn = {
-  padding: "8px 14px",
-  backgroundColor: "#328cc1",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const clearBtn = {
-  padding: "8px 14px",
-  backgroundColor: "#999",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
-
-const paginationBtn = {
-  padding: "8px 14px",
-  backgroundColor: "#328cc1",
-  color: "#fff",
-  border: "none",
-  cursor: "pointer",
-};
 
 export default Properties;

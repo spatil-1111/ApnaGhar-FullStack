@@ -6,6 +6,7 @@ import { getRatingSummary } from "../services/reviewService";
 import { getToken } from "../utils/auth";
 import ReviewForm from "../components/Reviews/ReviewForm";
 import ReviewsList from "../components/Reviews/ReviewsList";
+import "./PropertyDetails.css";
 
 function PropertyDetails() {
   const { id } = useParams();
@@ -18,15 +19,6 @@ function PropertyDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = getToken();
-
-    // ✅ LOGIN REQUIRED
-    if (!token) {
-      alert("Please login to view property details");
-      navigate("/login");
-      return;
-    }
-
     loadData();
   }, [id]);
 
@@ -35,18 +27,14 @@ function PropertyDetails() {
       const pRes = await getPropertyById(id);
       setProperty(pRes.data);
 
-      // ⭐ rating summary is optional (may give 403)
       try {
         const rRes = await getRatingSummary(id);
         setRatingSummary(rRes.data);
-      } catch (err) {
-        console.warn("Rating summary not accessible");
+      } catch {
         setRatingSummary(null);
       }
-
     } catch (err) {
-      console.error(err);
-      alert("Property not found or access denied");
+      alert("Property not found");
       navigate("/properties");
     } finally {
       setLoading(false);
@@ -54,6 +42,14 @@ function PropertyDetails() {
   };
 
   const handleBookNow = () => {
+    const token = getToken();
+
+    if (!token) {
+      alert("Please login to book this property");
+      navigate("/login");
+      return;
+    }
+
     if (!startDate || !endDate) {
       alert("Please select start and end dates");
       return;
@@ -71,99 +67,107 @@ function PropertyDetails() {
   };
 
   if (loading) {
-    return <p style={{ padding: "60px" }}>Loading property...</p>;
+    return <p style={{ padding: "120px", textAlign: "center" }}>Loading property...</p>;
   }
 
-  // ✅ SAFETY — NO CRASH
   if (!property) return null;
 
   return (
-    <div style={{ padding: "60px", maxWidth: "1100px", margin: "auto" }}>
-      <img
-        src={property.imageUrl}
-        alt={property.title}
-        style={{
-          width: "100%",
-          height: "420px",
-          objectFit: "cover",
-          borderRadius: "8px",
-          marginBottom: "24px",
-        }}
-      />
-
-      <h2>{property.title}</h2>
-
-      {/* ⭐ RATING SUMMARY */}
-      {ratingSummary && (
-        <div style={{ marginBottom: "10px" }}>
-          <Stars rating={ratingSummary.averageRating} />
-          <span style={{ marginLeft: "8px", color: "#666" }}>
-            ({ratingSummary.averageRating.toFixed(1)} / 5) ·{" "}
-            {ratingSummary.totalReviews} reviews
-          </span>
-        </div>
-      )}
-
-      <p style={{ color: "#666", marginBottom: "12px" }}>
-        {property.location}
-      </p>
-
-      <h3 style={{ color: "#0b3c5d", marginBottom: "16px" }}>
-        ₹ {property.rent} / month
-      </h3>
-
-      <p style={{ lineHeight: "1.7", marginBottom: "24px" }}>
-        {property.amenities}
-      </p>
-
-      {!property.available && (
-        <p style={{ color: "red", marginBottom: "16px", fontWeight: "bold" }}>
-          This property is currently unavailable
-        </p>
-      )}
-
-      <div style={{ display: "flex", gap: "16px", marginBottom: "24px" }}>
-        <div>
-          <label>Start Date</label>
-          <br />
-          <input
-            type="date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            disabled={!property.available}
-          />
-        </div>
-
-        <div>
-          <label>End Date</label>
-          <br />
-          <input
-            type="date"
-            value={endDate}
-            onChange={(e) => setEndDate(e.target.value)}
-            disabled={!property.available}
-          />
+    <div className="property-details-page">
+      {/* BANNER */}
+      <div className="details-banner">
+        <img
+          src={
+            property.imageUrl ||
+            "https://images.unsplash.com/photo-1560185008-5f0bb1866cab"
+          }
+          alt={property.title}
+        />
+        <div className="banner-overlay">
+          <h1>{property.title}</h1>
+          <p>{property.location}</p>
         </div>
       </div>
 
-      <button
-        onClick={handleBookNow}
-        disabled={!property.available}
-        style={{
-          backgroundColor: property.available ? "#328cc1" : "#999",
-          color: "#ffffff",
-          border: "none",
-          padding: "14px 28px",
-          fontSize: "16px",
-          cursor: property.available ? "pointer" : "not-allowed",
-          borderRadius: "4px",
-        }}
-      >
-        {property.available ? "Book Now" : "Unavailable"}
-      </button>
+      {/* CONTENT */}
+      <div className="details-container">
+        {/* LEFT INFO */}
+        <div className="details-info">
+          {ratingSummary && (
+            <div className="rating-row">
+              <Stars rating={ratingSummary.averageRating} />
+              <span>
+                {ratingSummary.averageRating.toFixed(1)} / 5 ·{" "}
+                {ratingSummary.totalReviews} reviews
+              </span>
+            </div>
+          )}
 
-      {/* ⭐ REVIEWS SECTION */}
-      <div style={{ marginTop: "50px" }}>
+          <div className="info-cards">
+            <div className="info-box">
+              <h4>Rent</h4>
+              <p>₹ {property.rent} / month</p>
+            </div>
+
+            <div className="info-box">
+              <h4>Type</h4>
+              <p>{property.type}</p>
+            </div>
+
+            <div className="info-box">
+              <h4>Status</h4>
+              <p>{property.available ? "Available" : "Occupied"}</p>
+            </div>
+          </div>
+
+          <div className="amenities-box">
+            <h3>Amenities</h3>
+            <p>{property.amenities}</p>
+          </div>
+
+          {!property.available && (
+            <p className="unavailable-text">
+              Currently unavailable for booking
+            </p>
+          )}
+        </div>
+
+        {/* BOOKING CARD */}
+        <div className="booking-card">
+          <h3>Book This Property</h3>
+
+          <div className="date-group">
+            <label>Start Date</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              disabled={!property.available}
+            />
+          </div>
+
+          <div className="date-group">
+            <label>End Date</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              disabled={!property.available}
+            />
+          </div>
+
+          <button
+            className="book-btn"
+            onClick={handleBookNow}
+            disabled={!property.available}
+          >
+            {property.available ? "Book Now" : "Unavailable"}
+          </button>
+        </div>
+      </div>
+
+      {/* REVIEWS */}
+      <div className="reviews-section">
         <h3>Reviews</h3>
         <ReviewForm propertyId={id} />
         <ReviewsList propertyId={id} />
@@ -172,13 +176,13 @@ function PropertyDetails() {
   );
 }
 
-/* ⭐ STAR UI */
+/* STAR UI */
 function Stars({ rating }) {
   const fullStars = Math.floor(rating);
   const halfStar = rating - fullStars >= 0.5;
 
   return (
-    <span style={{ color: "#f5b50a", fontSize: "18px" }}>
+    <span className="star-row">
       {"★".repeat(fullStars)}
       {halfStar && "☆"}
       {"☆".repeat(5 - fullStars - (halfStar ? 1 : 0))}

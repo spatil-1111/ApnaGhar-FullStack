@@ -1,65 +1,99 @@
-.hero {
-  width: 100vw;
-  height: 85vh;
-  background: linear-gradient(
-      rgba(11, 60, 93, 0.85),
-      rgba(11, 60, 93, 0.85)
-    ),
-    url("https://images.unsplash.com/photo-1568605114967-8130f3a36994");
+.hero-section {
+  position: relative;
+  height: 90vh;
+  width: 100%;
+  background-image: url("https://images.unsplash.com/photo-1505691938895-1758d7feb511");
   background-size: cover;
   background-position: center;
   display: flex;
   align-items: center;
-  padding: 0 60px;
+  justify-content: center;
 }
 
+/* Dark overlay */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.65),
+    rgba(0, 0, 0, 0.6)
+  );
+}
 
+/* Content */
 .hero-content {
-  color: #ffffff;
-  max-width: 650px;
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 20px;
+  text-align: center;
+  color: white;
 }
 
 .hero-content h1 {
-  font-size: 44px;
+  font-size: 52px;
+  line-height: 1.2;
   margin-bottom: 16px;
+  font-weight: 800;
+}
+
+.hero-content h1 span {
+  color: #60a5fa;
 }
 
 .hero-content p {
-  font-size: 18px;
-  margin-bottom: 32px;
-  line-height: 1.6;
+  font-size: 17px;
+  color: #e5e7eb;
+  margin-bottom: 40px;
 }
 
+/* Buttons */
 .hero-buttons {
   display: flex;
-  gap: 16px;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
-.primary-btn {
-  background-color: #328cc1;
-  color: #ffffff;
+.hero-btn {
+  padding: 14px 34px;
+  border-radius: 999px;
+  font-size: 15px;
+  cursor: pointer;
   border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
+  transition: all 0.3s ease;
 }
 
-.primary-btn:hover {
-  background-color: #2a78a8;
+/* Primary */
+.hero-btn.primary {
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
 }
 
-.secondary-btn {
-  background-color: transparent;
-  color: #ffffff;
-  border: 2px solid #ffffff;
-  padding: 12px 24px;
-  font-size: 16px;
-  cursor: pointer;
-  border-radius: 4px;
+.hero-btn.primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
 }
 
-.secondary-btn:hover {
-  background-color: #ffffff;
-  color: #0b3c5d;
+/* Secondary */
+.hero-btn.secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 36px;
+  }
+
+  .hero-content p {
+    font-size: 15px;
+  }
 }

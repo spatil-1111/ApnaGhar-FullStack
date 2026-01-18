@@ -1,0 +1,135 @@
+.booking-page {
+  padding: 20px;
+}
+
+.booking-page h2 {
+  margin-bottom: 20px;
+}
+
+/* LOADING */
+
+.booking-loading {
+  padding: 40px;
+  text-align: center;
+}
+
+/* EMPTY */
+
+.booking-empty {
+  text-align: center;
+  padding: 50px;
+  border: 2px dashed #ccc;
+  border-radius: 14px;
+  background: #fafafa;
+}
+
+.booking-empty p {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+/* GRID */
+
+.booking-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 22px;
+}
+
+/* CARD */
+
+.booking-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+.booking-card:hover {
+  transform: translateY(-6px);
+}
+
+/* HEADER */
+
+.booking-header {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #2563eb, #3b82f6);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* BODY */
+
+.booking-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* STATUS BADGES */
+
+.status {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status.confirmed {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+/* PAYMENT */
+
+.pay.success {
+  color: green;
+}
+
+.pay.pending {
+  color: orange;
+}
+
+.pay.failed {
+  color: red;
+}
+
+.paid-text {
+  color: green;
+  font-weight: bold;
+}
+
+/* BUTTONS */
+
+.pay-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #16a34a;
+  color: white;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  margin-top: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  background: #ef4444;
+  color: white;
+  cursor: pointer;
+}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../../services/api";
+import "./OwnerDashboard.css";
 
 function OwnerDashboard() {
   const [data, setData] = useState(null);
@@ -17,68 +18,58 @@ function OwnerDashboard() {
       });
   }, []);
 
-  if (loading) {
-    return <p>Loading dashboard...</p>;
-  }
-
-  if (!data) {
-    return <p>No dashboard data</p>;
-  }
+  if (loading) return <p className="dash-loading">Loading dashboard...</p>;
+  if (!data) return <p>No dashboard data</p>;
 
   return (
-    <div>
-      <h3 style={{ marginBottom: "24px" }}>📊 Owner Dashboard</h3>
+    <div className="owner-dashboard">
+      <h3>📊 Owner Dashboard</h3>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-          gap: "20px",
-        }}
-      >
-        <DashboardCard
-          title="Total Properties"
-          value={data.totalProperties}
-          color="#0b3c5d"
-        />
+      <div className="dash-grid">
 
         <DashboardCard
           title="Active Properties"
           value={data.activeProperties}
+          icon="✅"
           color="green"
         />
 
         <DashboardCard
           title="Total Bookings"
           value={data.totalBookings}
-          color="#328cc1"
+          icon="📦"
+          color="#7c3aed"
         />
 
         <DashboardCard
           title="Total Earnings"
           value={`₹ ${data.totalEarnings}`}
-          color="orange"
+          icon="💰"
+          color="#f97316"
         />
+
+        <DashboardCard
+          title="This Month"
+          value={`₹ ${data.monthlyEarnings}`}
+          icon="📅"
+          color="#2563eb"
+        />
+
       </div>
     </div>
   );
 }
 
-/* ---------- Card Component ---------- */
+/* ---------- CARD ---------- */
 
-function DashboardCard({ title, value, color }) {
+function DashboardCard({ title, value, icon, color }) {
   return (
-    <div
-      style={{
-        padding: "20px",
-        borderRadius: "10px",
-        background: "#ffffff",
-        boxShadow: "0 4px 8px rgba(0,0,0,0.05)",
-        textAlign: "center",
-      }}
-    >
-      <h2 style={{ marginBottom: "8px", color }}>{value}</h2>
-      <p style={{ color: "#555" }}>{title}</p>
+    <div className="dash-card" style={{ background: color }}>
+      <div className="dash-icon">{icon}</div>
+      <div>
+        <h2>{value}</h2>
+        <p>{title}</p>
+      </div>
     </div>
   );
 }
