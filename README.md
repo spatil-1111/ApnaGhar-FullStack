@@ -69,11 +69,22 @@ This project is designed as a **real-world rental platform** using modern **Java
 ## 📂 Project Structure
 
 ```
-
 ApnaGhar-FullStack
 │
-├── src/                     → Spring Boot Backend
-├── apnaghar-frontend/       → React Frontend
+├── src/ → Spring Boot Backend
+│ ├── controller
+│ ├── service
+│ ├── repository
+│ ├── model
+│ ├── dto
+│ └── security
+│
+├── apnaghar-frontend/ → React Frontend
+│ ├── src
+│ ├── components
+│ ├── services
+│ └── pages
+│
 ├── pom.xml
 └── README.md
 
