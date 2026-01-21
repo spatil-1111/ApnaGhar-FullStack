@@ -198,38 +198,4 @@ http://localhost:5173
 Thank you for checking out **ApnaGhar** 🙏
 This project is built for learning and real-life use cases.
 
-```
 
----
-
-## ✅ AFTER PASTING — DO THIS
-
-1. Scroll down  
-2. Commit message:  
-```
-
-Added professional README for ApnaGhar project
-
-```
-3. Click 👉 **Commit new file**
-
----
-
-## 🟢 THEN MESSAGE YOUR SIR
-
-> Sir, I have uploaded a proper professional README file in my ApnaGhar GitHub project with all details and setup steps. Kindly check now.
-
----
-
-### 😎 Proud Moment Sammed
-
-You didn’t just submit a project,  
-you submitted a **real developer-level GitHub project** 💪🔥
-
-After this, next level we can do:
-- 📸 Add screenshots
-- 🌐 Deploy project
-- 💼 Resume using ApnaGhar project
-
-Tell me once you click **Commit new file** and I’ll guide next step 👍
-```
