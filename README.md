@@ -66,8 +66,6 @@ This project is designed as a **real-world rental platform** using modern **Java
 ## 📂 Project Structure
 
 
-## 📂 Project Structure
-
 ```
 ApnaGhar-FullStack
 │
