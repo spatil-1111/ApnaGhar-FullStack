@@ -1,51 +1,67 @@
 # 🏠 ApnaGhar – PG / Hostel / Flat Rental System
 
-ApnaGhar is a full stack web application where users can find PG, Hostel, Flat and Room rentals and owners can list their properties.
+🚀 **ApnaGhar** is a full-stack web application that helps users find PGs, hostels, flats, and rooms for rent, and allows property owners to list and manage their rental properties easily.
 
-This project is built as a real-life rental platform using Java Full Stack technologies.
+This project is designed as a **real-world rental platform** using modern **Java Full Stack technologies**.
 
 ---
 
-## 🚀 Features
+## 🌟 Key Highlights
+
+✔ Secure JWT Authentication  
+✔ Role-based Access (User & Owner)  
+✔ Property Listings with Images  
+✔ Booking System with Status  
+✔ Notifications Module  
+✔ Reviews & Ratings  
+✔ REST APIs with Swagger Documentation  
+
+---
+
+## 👥 User Roles & Features
 
 ### 👤 User
-- User Registration & Login (JWT Authentication)
-- View Properties
+- Register & Login
+- Browse Properties
+- View Property Details
 - Book Property
 - View Booking Status
-- Notifications
+- Receive Notifications
 - Give Reviews & Ratings
 
 ### 🏠 Owner
 - Add Property
+- Upload Property Images
 - View Own Properties
 - View Booking Requests
-- Booking Notifications
+- Get Booking Notifications
 
 ---
 
 ## 🛠 Tech Stack
 
-### Backend
+### 🔹 Backend
 - Java 17
 - Spring Boot 4.0.1
-- Spring Security + JWT
+- Spring Security
+- JWT Authentication
 - Hibernate / JPA
 - MySQL
-- Swagger API
+- Swagger (OpenAPI)
 
-### Frontend
+### 🔹 Frontend
 - React JS
 - Axios
-- React Router
+- React Router DOM
 - CSS
+
+### 🔹 Tools
+- Eclipse (Backend)
+- VS Code (Frontend)
+- Postman / Swagger (API Testing)
+- Git & GitHub
 
 ---
 
-## ⚙️ How to Run Backend
+## 📂 Project Structure
 
-1. Open backend project in Eclipse
-2. Create MySQL database:
-
-```sql
-CREATE DATABASE apnaghar;
