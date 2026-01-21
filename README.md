@@ -67,13 +67,3 @@ This project is designed as a **real-world rental platform** using modern **Java
 
 
 
----
-
-## ⚙️ Backend Setup Instructions
-
-### ✅ Step 1: Create Database
-
-Open MySQL and run:
-
-```sql
-CREATE DATABASE apnaghar;
