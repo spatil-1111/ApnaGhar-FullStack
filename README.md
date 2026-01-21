@@ -1,13 +1,13 @@
 
 # 🏠 ApnaGhar – PG / Hostel / Flat Rental Platform
 
-🚀 **ApnaGhar** is a full-stack rental management web application that connects **tenants** looking for PGs, hostels, flats, and rooms with **property owners** who want to list and manage their properties.
+**ApnaGhar** is a full-stack rental management web application that connects **tenants** looking for PGs, hostels, flats, and rooms with **property owners** who want to list and manage their properties.
 
 It is designed as a **real-world scalable system** using modern **Java Full Stack technologies** with secure authentication and role-based access.
 
 ---
 
-## ✨ Why ApnaGhar?
+## Why ApnaGhar?
 
 ✔ Built using Industry-standard Architecture  
 ✔ Secure JWT Authentication  
@@ -17,9 +17,9 @@ It is designed as a **real-world scalable system** using modern **Java Full Stac
 
 ---
 
-## 🌟 Key Features
+##  Key Features
 
-### 👤 Tenant (User)
+###  Tenant (User)
 - Register & Secure Login
 - Browse Available Properties
 - View Property Details with Images
@@ -28,7 +28,7 @@ It is designed as a **real-world scalable system** using modern **Java Full Stac
 - Receive Notifications
 - Submit Reviews & Ratings
 
-### 🏠 Property Owner
+###  Property Owner
 - Add & Manage Properties
 - Upload Property Images
 - View Booking Requests
@@ -37,7 +37,7 @@ It is designed as a **real-world scalable system** using modern **Java Full Stac
 
 ---
 
-## 🧩 System Architecture
+##  System Architecture
 
 ```
 
@@ -51,9 +51,9 @@ React Frontend  →  REST APIs  →  Spring Boot Backend  →  MySQL Database
 
 ---
 
-## 🛠 Technology Stack
+##  Technology Stack
 
-### 🔹 Backend
+###  Backend
 - Java 17
 - Spring Boot 4.0.1
 - Spring Security
@@ -62,13 +62,13 @@ React Frontend  →  REST APIs  →  Spring Boot Backend  →  MySQL Database
 - MySQL
 - Swagger (OpenAPI)
 
-### 🔹 Frontend
+###  Frontend
 - React (Vite)
 - Axios
 - React Router DOM
 - Modular CSS
 
-### 🔹 Tools & Platforms
+###  Tools & Platforms
 - Eclipse IDE
 - Visual Studio Code
 - Postman & Swagger
@@ -76,7 +76,7 @@ React Frontend  →  REST APIs  →  Spring Boot Backend  →  MySQL Database
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 
@@ -105,9 +105,9 @@ ApnaGhar-FullStack
 
 ---
 
-## ⚙️ Backend Setup Guide
+##  Backend Setup Guide
 
-### ✅ Step 1: Create Database
+###  Step 1: Create Database
 
 ```sql
 CREATE DATABASE apnaghar;
@@ -115,7 +115,7 @@ CREATE DATABASE apnaghar;
 
 ---
 
-### ✅ Step 2: Configure Database
+###  Step 2: Configure Database
 
 Update `application.properties`:
 
@@ -130,7 +130,7 @@ spring.jpa.show-sql=true
 
 ---
 
-### ✅ Step 3: Run Backend
+###  Step 3: Run Backend
 
 Run in Eclipse:
 
@@ -152,15 +152,15 @@ http://localhost:8080/swagger-ui.html
 
 ---
 
-## 💻 Frontend Setup Guide
+##  Frontend Setup Guide
 
-### ✅ Step 1: Open Frontend Folder
+###  Step 1: Open Frontend Folder
 
 Open `apnaghar-frontend` in VS Code
 
 ---
 
-### ✅ Step 2: Install Dependencies
+###  Step 2: Install Dependencies
 
 ```bash
 npm install
@@ -168,7 +168,7 @@ npm install
 
 ---
 
-### ✅ Step 3: Run Application
+###  Step 3: Run Application
 
 ```bash
 npm run dev
@@ -182,7 +182,7 @@ http://localhost:5173
 
 ---
 
-## 🔐 Authentication Flow
+##  Authentication Flow
 
 1. User registers
 2. User logs in
@@ -192,14 +192,7 @@ http://localhost:5173
 
 ---
 
-## 📸 Screenshots
-
-> 📌 Add UI screenshots here to improve project presentation
-> (Home Page, Property List, Booking Page, Owner Dashboard)
-
----
-
-## 🚀 Future Improvements
+##  Future Improvements
 
 * Online Payment Gateway
 * Real-time Chat System
@@ -209,21 +202,21 @@ http://localhost:5173
 
 ---
 
-## 👨‍💻 Developer
+##  Developer
 
 **Sammed Patil**
-🎓 Java Full Stack Developer
-📍 Pune, India
+ Java Full Stack Developer
+ Location: Pune, India
 
-📧 Email: [sammedpatil010@gmail.com](mailto:sammedpatil010@gmail.com)
-🔗 GitHub: [https://github.com/spatil-1111](https://github.com/spatil-1111)
+  Email: [sammedpatil010@gmail.com](mailto:sammedpatil010@gmail.com)
+  GitHub: [https://github.com/spatil-1111](https://github.com/spatil-1111)
 
 ---
 
-## ⭐ Support the Project
+##  Support the Project
 
 If you found this project helpful, please give it a ⭐ on GitHub.
-It motivates me to build more real-world applications! 🙌
+It motivates me to build more real-world applications! 
 
 ```
 
