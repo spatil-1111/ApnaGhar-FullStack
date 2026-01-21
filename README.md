@@ -1,44 +1,57 @@
-# 🏠 ApnaGhar – PG / Hostel / Flat Rental System
 
-🚀 **ApnaGhar** is a full-stack web application that helps users find PGs, hostels, flats, and rooms for rent, and allows property owners to list and manage their rental properties easily.
+# 🏠 ApnaGhar – PG / Hostel / Flat Rental Platform
 
-This project is designed as a **real-world rental platform** using modern **Java Full Stack technologies**.
+🚀 **ApnaGhar** is a full-stack rental management web application that connects **tenants** looking for PGs, hostels, flats, and rooms with **property owners** who want to list and manage their properties.
+
+It is designed as a **real-world scalable system** using modern **Java Full Stack technologies** with secure authentication and role-based access.
 
 ---
 
-## 🌟 Key Highlights
+## ✨ Why ApnaGhar?
 
+✔ Built using Industry-standard Architecture  
 ✔ Secure JWT Authentication  
-✔ Role-based Access (User & Owner)  
-✔ Property Listings with Images  
-✔ Booking System with Status  
-✔ Notifications Module  
-✔ Reviews & Ratings  
-✔ REST APIs with Swagger Documentation  
+✔ Clean REST API Design  
+✔ Fully Functional Frontend & Backend Integration  
+✔ Designed for Real-Life Usage  
 
 ---
 
-## 👥 User Roles & Features
+## 🌟 Key Features
 
-### 👤 User
-- Register & Login
-- Browse Properties
-- View Property Details
+### 👤 Tenant (User)
+- Register & Secure Login
+- Browse Available Properties
+- View Property Details with Images
 - Book Property
-- View Booking Status
+- Track Booking Status
 - Receive Notifications
-- Give Reviews & Ratings
+- Submit Reviews & Ratings
 
-### 🏠 Owner
-- Add Property
+### 🏠 Property Owner
+- Add & Manage Properties
 - Upload Property Images
-- View Own Properties
 - View Booking Requests
-- Get Booking Notifications
+- Track Earnings & Booking History
+- Receive Booking Notifications
 
 ---
 
-## 🛠 Tech Stack
+## 🧩 System Architecture
+
+```
+
+React Frontend  →  REST APIs  →  Spring Boot Backend  →  MySQL Database
+
+```
+
+- Frontend communicates using **Axios**
+- Backend secured using **Spring Security + JWT**
+- Data persistence using **JPA & Hibernate**
+
+---
+
+## 🛠 Technology Stack
 
 ### 🔹 Backend
 - Java 17
@@ -50,38 +63,40 @@ This project is designed as a **real-world rental platform** using modern **Java
 - Swagger (OpenAPI)
 
 ### 🔹 Frontend
-- React JS
+- React (Vite)
 - Axios
 - React Router DOM
-- CSS
+- Modular CSS
 
-### 🔹 Tools
-- Eclipse (Backend)
-- VS Code (Frontend)
-- Postman / Swagger (API Testing)
+### 🔹 Tools & Platforms
+- Eclipse IDE
+- Visual Studio Code
+- Postman & Swagger
 - Git & GitHub
 
 ---
 
 ## 📂 Project Structure
 
-
 ```
+
 ApnaGhar-FullStack
 │
-├── src/ → Spring Boot Backend
-│ ├── controller
-│ ├── service
-│ ├── repository
-│ ├── model
-│ ├── dto
-│ └── security
+├── src/                      → Spring Boot Backend
+│   ├── controller
+│   ├── service
+│   ├── repository
+│   ├── model
+│   ├── dto
+│   ├── security
+│   └── exception
 │
-├── apnaghar-frontend/ → React Frontend
-│ ├── src
-│ ├── components
-│ ├── services
-│ └── pages
+├── apnaghar-frontend/        → React Frontend
+│   ├── src
+│   │   ├── components
+│   │   ├── pages
+│   │   ├── services
+│   │   └── utils
 │
 ├── pom.xml
 └── README.md
@@ -90,11 +105,9 @@ ApnaGhar-FullStack
 
 ---
 
-## ⚙️ Backend Setup Instructions
+## ⚙️ Backend Setup Guide
 
 ### ✅ Step 1: Create Database
-
-Open MySQL and run:
 
 ```sql
 CREATE DATABASE apnaghar;
@@ -102,9 +115,11 @@ CREATE DATABASE apnaghar;
 
 ---
 
-### ✅ Step 2: Update application.properties
+### ✅ Step 2: Configure Database
 
-```
+Update `application.properties`:
+
+```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/apnaghar
 spring.datasource.username=root
 spring.datasource.password=your_password
@@ -117,9 +132,11 @@ spring.jpa.show-sql=true
 
 ### ✅ Step 3: Run Backend
 
-In Eclipse:
+Run in Eclipse:
 
-Run → `ApnaGharApplication.java`
+```
+ApnaGharApplication.java
+```
 
 Backend will start at:
 
@@ -127,7 +144,7 @@ Backend will start at:
 http://localhost:8080
 ```
 
-Swagger API:
+Swagger API Docs:
 
 ```
 http://localhost:8080/swagger-ui.html
@@ -135,7 +152,7 @@ http://localhost:8080/swagger-ui.html
 
 ---
 
-## 💻 Frontend Setup Instructions
+## 💻 Frontend Setup Guide
 
 ### ✅ Step 1: Open Frontend Folder
 
@@ -143,7 +160,7 @@ Open `apnaghar-frontend` in VS Code
 
 ---
 
-### ✅ Step 2: Install Packages
+### ✅ Step 2: Install Dependencies
 
 ```bash
 npm install
@@ -151,13 +168,13 @@ npm install
 
 ---
 
-### ✅ Step 3: Start Frontend
+### ✅ Step 3: Run Application
 
 ```bash
 npm run dev
 ```
 
-Open in browser:
+Open browser:
 
 ```
 http://localhost:5173
@@ -169,29 +186,30 @@ http://localhost:5173
 
 1. User registers
 2. User logs in
-3. JWT Token is generated
-4. Token is stored in browser
-5. Token is sent with every secured API request
+3. Backend generates JWT token
+4. Token stored in browser
+5. Token sent with every secured request
 
 ---
 
 ## 📸 Screenshots
 
-> (Screenshots of UI can be added here for better presentation)
+> 📌 Add UI screenshots here to improve project presentation
+> (Home Page, Property List, Booking Page, Owner Dashboard)
 
 ---
 
-## 🚀 Future Enhancements
+## 🚀 Future Improvements
 
-* Online Payment Integration
-* Chat between Owner and User
-* Google Maps Location
+* Online Payment Gateway
+* Real-time Chat System
+* Google Maps Integration
 * Admin Dashboard
-* Deployment on Cloud
+* Cloud Deployment (AWS / Render)
 
 ---
 
-## 👨‍💻 Developer Details
+## 👨‍💻 Developer
 
 **Sammed Patil**
 🎓 Java Full Stack Developer
@@ -202,9 +220,10 @@ http://localhost:5173
 
 ---
 
-## ⭐ If you like this project, give it a star!
+## ⭐ Support the Project
 
-Thank you for checking out **ApnaGhar** 🙏
-This project is built for learning and real-life use cases.
+If you found this project helpful, please give it a ⭐ on GitHub.
+It motivates me to build more real-world applications! 🙌
 
+```
 
