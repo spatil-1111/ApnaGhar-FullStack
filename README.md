@@ -1,5 +1,5 @@
 
-# 🏠 ApnaGhar – PG / Hostel / Flat Rental Platform
+#  ApnaGhar – PG / Hostel / Flat Rental Platform
 
 **ApnaGhar** is a full-stack rental management web application that connects **tenants** looking for PGs, hostels, flats, and rooms with **property owners** who want to list and manage their properties.
 
@@ -9,11 +9,11 @@ It is designed as a **real-world scalable system** using modern **Java Full Stac
 
 ## Why ApnaGhar?
 
-✔ Built using Industry-standard Architecture  
-✔ Secure JWT Authentication  
-✔ Clean REST API Design  
-✔ Fully Functional Frontend & Backend Integration  
-✔ Designed for Real-Life Usage  
+ Built using Industry-standard Architecture  
+ Secure JWT Authentication  
+ Clean REST API Design  
+ Fully Functional Frontend & Backend Integration  
+ Designed for Real-Life Usage  
 
 ---
 
